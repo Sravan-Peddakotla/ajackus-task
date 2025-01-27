@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 
 const CreateAndUpdateUser = (props) => {
+    // use State Hook Implemented
     const [state, setState] = useState({
         name: "",
         phone: "",
@@ -12,7 +13,9 @@ const CreateAndUpdateUser = (props) => {
         showPhoneErroMessage: false,
         showEmailErrorMessage: false,
     })
+    // Props Destructuring
     const { addUser, action, id } = props
+    // user Effect Hook Implementation
     useEffect(() => {
         if (action === 'UPDATE') {
             setState((prev) => ({ ...prev, isLoading: true }))
@@ -54,6 +57,7 @@ const CreateAndUpdateUser = (props) => {
     const goBackHandle = () => {
         addUser(undefined)
     }
+    // Name Validation Function
     const checkNameValidation = (event) => {
         if (event.target.value === '') {
             setState((prev) => ({ ...prev, showNameErrorMessage: true }))
@@ -61,6 +65,7 @@ const CreateAndUpdateUser = (props) => {
             setState((prev) => ({ ...prev, showNameErrorMessage: false }))
         }
     }
+    // Phone Number Validation Function
     const checkPhoneValidation = (event) => {
         if (event.target.value === '') {
             setState((prev) => ({ ...prev, showPhoneErroMessage: true }))
@@ -68,6 +73,7 @@ const CreateAndUpdateUser = (props) => {
             setState((prev) => ({ ...prev, showPhoneErroMessage: false }))
         }
     }
+    // Email Validation Function
     const checkEmailValidation = (event) => {
         if (event.target.value === '') {
             setState((prev) => ({ ...prev, showEmailErrorMessage: true }))
@@ -75,39 +81,42 @@ const CreateAndUpdateUser = (props) => {
             setState((prev) => ({ ...prev, showEmailErrorMessage: false }))
         }
     }
+    // Submit Form Function
     const submitForm = (event) => {
         event.preventDefault();
         if (name !== '' && phone !== '' && email !== '') {
-            setState((prev) => ({ ...prev, isLoading: true }))
+            setState((prev) => ({ ...prev, isLoading: true, showErrorMessage: false }))
             const user = {
                 name,
                 phone,
                 email,
                 id
             }
-            const url = action === 'CREATE' ? 'https://jsonplaceholder.typicode.com/users' : 
-                    `https://jsonplaceholder.typicode.com/users/${id} `;
+            const url = action === 'CREATE' ? 'https://jsonplaceholder.typicode.com/users' :
+                `https://jsonplaceholder.typicode.com/users/${id} `;
             const options = {
-                method: action === 'CREATE' ? "POST" : "PUT" ,
+                method: action === 'CREATE' ? "POST" : "PUT",
                 body: JSON.stringify(user),
                 headers: {
-                    'Application-Content': 'application/json',
+                    'Content-Type': 'application/json',
                     Accept: 'application/json'
-                }
+                },
             }
             fetch(url, options)
                 .then((response) => {
                     if (response.ok === true) {
-                        if (action === 'CREATE') {
-                            addUser(user, action)
-                        } else {
-                            addUser(user, action ,id)
-                        }
-                        setState((prev) => ({ ...prev, isLoading: false }))
+                        return response.json()
                     } else {
-                        return 
+                        return
                     }
-                    
+                })
+                .then((jsonData) => {
+                    setState((prev) => ({ ...prev, isLoading: false }))
+                    if (action === 'CREATE') {
+                        addUser(jsonData, action, null)
+                    } else {
+                        addUser(jsonData, action, id)
+                    }
                 })
                 .catch((error) => {
                     setState((prev) => ({ ...prev, isLoading: false }))
@@ -117,6 +126,7 @@ const CreateAndUpdateUser = (props) => {
             setState((prev) => ({ ...prev, showErrorMessage: true }))
         }
     }
+    // state variables destructuring
     const {
         name,
         phone,

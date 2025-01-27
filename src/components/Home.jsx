@@ -1,15 +1,19 @@
 import { useState, useEffect } from "react"
-import CreateAndUpdateUser from './CreateAndUpdateUser.jsx'
 import Read from './Read.jsx'
+import Snackbar from "./Snackbar.jsx"
+import CreateAndUpdateUser from './CreateAndUpdateUser.jsx'
 
 const Home = () => {
+    // use State Hook Implementation
     const [state, setState] = useState({
         id: null,
-        user :{},
+        user: {},
         userDetails: [],
         isLoading: false,
         currentView: "LIST",
+        showSnackbar: false
     })
+     // use Effect Hook Implementation
     useEffect(() => {
         const getUserDetails = async () => {
             setState((prev) => ({ ...prev, isLoading: true }))
@@ -35,25 +39,35 @@ const Home = () => {
         }
         getUserDetails()
     }, [])
+    // Add User Function
     const addUser = (newUser, action, id,) => {
         if (newUser !== undefined) {
+            const { userDetails } = state
             if (action === 'CREATE') {
-                setState((prev) => ({ ...prev, currentView: "LIST", userDetails: [...userDetails, newUser] }))
+                setState((prev) => ({ ...prev, showSnackbar: true, currentView: "LIST", userDetails: [...prev.userDetails, newUser] }))
+                console.log(userDetails, 'userDetails')
             } else if (action === 'UPDATE') {
                 const index = userDetails.findIndex((item) => item.id === id)
                 userDetails.splice(index, 1, newUser)
-                setState((prev) => ({ ...prev, userDetails, currentView: "LIST" }))
+                setState((prev) => ({ ...prev, userDetails, showSnackbar: true, currentView: "LIST" }))
             }
         } else {
             setState((prev) => ({ ...prev, currentView: 'LIST' }))
         }
     }
+    // Close Snackbar Function
+    const closeSnackbar = () => {
+        setState((prev) => ({ ...prev, showSnackbar: false }))
+    }
+    // Update User Function
     const handleUpdate = (id) => {
         setState((prev) => ({ ...prev, currentView: 'UPDATE', id }))
     }
+    // Read User Details Function
     const handleRead = (user) => {
-        setState((prev) => ({...prev, currentView: "READ", user}))
-    }   
+        setState((prev) => ({ ...prev, currentView: "READ", user }))
+    }
+    // Delete User Function
     const handleDelete = (id) => {
         const confirm = window.confirm('Are you sure to delete ?')
         if (confirm) {
@@ -77,6 +91,7 @@ const Home = () => {
                 })
         }
     }
+    // Render Loader Function
     const renderLoader = () => {
         return (
             <div className="loader-view" >
@@ -85,6 +100,7 @@ const Home = () => {
             </div>
         )
     }
+    // Render Data Function
     const renderData = () => {
         if (currentView === 'LIST') {
             return (
@@ -94,7 +110,7 @@ const Home = () => {
                         <button type="button" className="update-btn ms-auto create-btn" onClick={addUserMethod} >+ ADD USER</button>
                     </div>
                     <table className="table" >
-                        <thead>
+                        <thead >
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
@@ -129,17 +145,19 @@ const Home = () => {
             return <Read user={user} handleGoBack={handleGoBack} />
         }
     }
+    // Close Create or Update Dialog
     const handleGoBack = () => {
-        setState((prev) => ({...prev, currentView : "LIST"}))
+        setState((prev) => ({ ...prev, currentView: "LIST" }))
     }
     const addUserMethod = () => {
         setState((prev) => ({ ...prev, currentView: 'CREATE' }))
     }
-    const { userDetails, isLoading, currentView, id, user } = state
+    const { userDetails, isLoading, currentView, id, user, showSnackbar } = state
     return (
         <div>
             <div>
                 {isLoading ? renderLoader() : renderData()}
+                {showSnackbar && <Snackbar message="Added Successfully" isOpen={showSnackbar} onClose={closeSnackbar} />}
             </div>
         </div>
     )

@@ -13,7 +13,11 @@
   padding: 4px;
 }
 .create-btn {
-  margin-left: -20px;
+  margin-right: 100px;
+  background-color: green;
+  color: white;
+  padding: 4px;
+  border-radius: 4px;
 }
 .read-btn {
   background-color: purple;
@@ -21,6 +25,9 @@
   margin: 4px;;
   border-radius: 4px;
   padding: 4px;
+}
+.add-user-btn {
+  margin-right: 10px;
 }
 .user-detail {
   padding-top: 2px;
