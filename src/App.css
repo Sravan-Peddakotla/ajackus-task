@@ -1,0 +1,91 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+.update-btn {
+  margin: 4px;
+  background-color: #61dafb;
+  border-radius: 4px;
+  padding: 4px;
+}
+.create-btn {
+  margin-left: -20px;
+}
+.read-btn {
+  background-color: purple;
+  color: white;
+  margin: 4px;;
+  border-radius: 4px;
+  padding: 4px;
+}
+.user-detail {
+  padding-top: 2px;
+}
+.font-weight {
+  font-weight: 600;
+}
+.delete-btn {
+  margin: 4px;
+  background-color: #cf555c;
+  border-radius: 4px;
+  padding: 4px;
+  color:white
+}
+.loader-view {
+  margin-top: 15%;
+}
+.create-update-dialog {
+  margin-top: 10%;
+  box-shadow: 5px 5px 5px 5px;
+  margin-left: 30%;
+  margin-right: 30%;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.input-field {
+  padding: 8px;
+  margin: 10px;
+  border-radius: 5px;
+}
+.error-message {
+  color : red;
+  padding: 2px;
+  margin: 2px;
+}
+.under-line {
+  text-decoration: underline;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
